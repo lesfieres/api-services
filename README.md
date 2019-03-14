@@ -1,2 +1,3 @@
 # api-services
-JS services to connect to REST APIs
+
+JS services to connect to REST APIs.
