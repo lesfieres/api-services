@@ -13,9 +13,12 @@ export default class GoodreadsService {
 		const url = `https://www.goodreads.com/search.xml?key=${this.key}&q=${title}`;
 		let promiseArray = [];
 
+		initPage = parseInt(initPage, 10);
+		numPages = parseInt(numPages, 10);
+
 		for (let i = initPage; i < initPage + numPages; i++) {
 			let promiseUrl = `${url}&page=${i}`;
-			promiseArray.push(fetch(promiseUrl, {mode: 'cors'}));
+			promiseArray.push(fetch(promiseUrl));
 		}
 
 		let responses = await Promise.all(promiseArray).then((responses) =>
