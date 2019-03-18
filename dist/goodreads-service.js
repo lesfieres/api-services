@@ -28,9 +28,7 @@ require('es6-promise');
 
 require('isomorphic-fetch');
 
-var _xml2json = require('xml2json');
-
-var _xml2json2 = _interopRequireDefault(_xml2json);
+var _xml2js = require('xml2js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54,7 +52,7 @@ var GoodreadsService = function () {
 			var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(title) {
 				var initPage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
 				var numPages = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
-				var url, promiseArray, i, promiseUrl, responses, books;
+				var url, promiseArray, i, promiseUrl, responses, jsonResults, books;
 				return _regenerator2.default.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
@@ -78,19 +76,26 @@ var GoodreadsService = function () {
 
 							case 5:
 								responses = _context.sent;
-								books = responses.map(function (xmlResponse) {
-									return _xml2json2.default.toJson(xmlResponse);
-								}).map(function (jsonResponse) {
-									return JSON.parse(jsonResponse);
-								}).map(function (object) {
-									return object.GoodreadsResponse.search.results.work;
+								_context.next = 8;
+								return Promise.all(responses.map(function (xmlResponse) {
+									return new Promise(function (resolve) {
+										(0, _xml2js.parseString)(xmlResponse, function (err, result) {
+											resolve(result);
+										});
+									});
+								}));
+
+							case 8:
+								jsonResults = _context.sent;
+								books = jsonResults.map(function (object) {
+									return object.GoodreadsResponse.search[0].results[0].work;
 								}).reduce(function (books, page) {
 									// return books.concat(page);
 									return [].concat((0, _toConsumableArray3.default)(books), (0, _toConsumableArray3.default)(page));
 								}, []);
 								return _context.abrupt('return', books);
 
-							case 8:
+							case 11:
 							case 'end':
 								return _context.stop();
 						}

@@ -1,6 +1,6 @@
 import 'es6-promise';
 import 'isomorphic-fetch';
-import parser from 'xml2json';
+import {parseString} from 'xml2js';
 
 const flatSingle = (arr) => [].concat(...arr);
 export default class GoodreadsService {
@@ -22,10 +22,17 @@ export default class GoodreadsService {
 			Promise.all(responses.map((response) => response.text()))
 		);
 
-		let books = responses
-			.map((xmlResponse) => parser.toJson(xmlResponse))
-			.map((jsonResponse) => JSON.parse(jsonResponse))
-			.map((object) => object.GoodreadsResponse.search.results.work)
+		let jsonResults = await Promise.all(responses
+			.map((xmlResponse) => {
+				return new Promise((resolve) => {
+					parseString(xmlResponse, function (err, result) {
+						resolve(result);
+					});
+				})
+			}));
+
+		let books = jsonResults
+			.map((object) => object.GoodreadsResponse.search[0].results[0].work)
 			.reduce((books, page) => {
 				// return books.concat(page);
 				return [ ...books, ...page ];
