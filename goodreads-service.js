@@ -26,39 +26,44 @@ export default class GoodreadsService {
     const url = `https://www.goodreads.com/search.xml?key=${this.key}&q=${title}`;
     let promiseArray = [];
 
-		initPage = parseInt(initPage, 10);
-		numPages = parseInt(numPages, 10);
+    initPage = parseInt(initPage, 10);
+    numPages = parseInt(numPages, 10);
 
-		for (let i = initPage; i < initPage + numPages; i++) {
-			let promiseUrl = `${url}&page=${i}`;
-			promiseArray.push(fetch(promiseUrl));
+    for (let i = initPage; i < initPage + numPages; i++) {
+      let promiseUrl = `${url}&page=${i}`;
+      promiseArray.push(fetch(promiseUrl));
     }
 
-    let responses = await Promise.all(promiseArray)
-      .then(responses =>
-        Promise.all(responses.map(response => response.text())),
-      )
-      .then(responses =>
-        Promise.all(
-          responses.map(
-            xmlResponse =>
-              new Promise(resolve => {
-                parseString(xmlResponse, (err, result) => {
-                  resolve(result);
-                });
-              }),
+    try {
+      let responses = await Promise.all(promiseArray)
+        .then(responses =>
+          Promise.all(responses.map(response => response.text())),
+        )
+        .then(responses =>
+          Promise.all(
+            responses.map(
+              xmlResponse =>
+                new Promise(resolve => {
+                  parseString(xmlResponse, (err, result) => {
+                    resolve(result);
+                  });
+                }),
+            ),
           ),
-        ),
-      );
+        );
 
-    let books = responses
-      .map(object => object.GoodreadsResponse.search[0].results[0].work)
-      .reduce((books, page) => {
-        // return books.concat(page);
-        return [...books, ...page];
-      }, [])
-      .map(book => parseBook(book));
+      let books = responses
+        .map(object => object.GoodreadsResponse.search[0].results[0].work)
+        .reduce((books, page) => {
+          // return books.concat(page);
+          return [...books, ...page];
+        }, [])
+        .map(book => parseBook(book));
 
-    return books;
+      return books;
+    } catch (e) {
+      // console.error('error parsing the response');
+      return [];
+    }
   }
 }

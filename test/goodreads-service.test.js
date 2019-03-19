@@ -3,36 +3,48 @@ const goodreadsService = new GoodreadsService('key', 'secret');
 
 describe('search', () => {
   const mockJPromise = Promise.resolve({});
-  const fetchSpy = jest.spyOn(global, 'fetch').mockImplementation(() => mockJPromise);
+  const fetchSpy = jest
+    .spyOn(global, 'fetch')
+    .mockImplementation(() => mockJPromise);
 
   beforeEach(() => {
     fetchSpy.mockClear();
   });
 
   test('Call to api with only title should just search page 1', () => {
-    goodreadsService.search("test");
+    goodreadsService.search('test');
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.goodreads.com/search.xml?key=key&q=test&page=1');
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/search.xml?key=key&q=test&page=1',
+    );
   });
 
   test('Call to api with title + initial page should search for correct page', () => {
-    goodreadsService.search("test", 5);
+    goodreadsService.search('test', 5);
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.goodreads.com/search.xml?key=key&q=test&page=5');
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/search.xml?key=key&q=test&page=5',
+    );
   });
 
   test('Call to api with title + initial page + number of pages should search for correct pages', () => {
-    goodreadsService.search("test", 5, 3);
+    goodreadsService.search('test', 5, 3);
 
     expect(global.fetch).toHaveBeenCalledTimes(3);
-    expect(global.fetch).toHaveBeenCalledWith('https://www.goodreads.com/search.xml?key=key&q=test&page=5');
-    expect(global.fetch).toHaveBeenCalledWith('https://www.goodreads.com/search.xml?key=key&q=test&page=6');
-    expect(global.fetch).toHaveBeenCalledWith('https://www.goodreads.com/search.xml?key=key&q=test&page=7');
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/search.xml?key=key&q=test&page=5',
+    );
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/search.xml?key=key&q=test&page=6',
+    );
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/search.xml?key=key&q=test&page=7',
+    );
   });
 
-  test('Call to api with only title should just search page 1', (done) => {
+  test('Call to api with only title should just search page 1', done => {
     const response1 = `
       <GoodreadsResponse>
         <search>
@@ -81,16 +93,16 @@ describe('search', () => {
         title: 'Book 1',
         author: { id: '10', name: 'Author 1' },
         image_url: 'image 1',
-        small_image_url: 'small image 1'
+        small_image_url: 'small image 1',
       },
       {
         id: '2',
         title: 'Book 2',
         author: { id: '20', name: 'Author 2' },
         image_url: 'image 2',
-        small_image_url: 'small image 2'
-      }
-    ]
+        small_image_url: 'small image 2',
+      },
+    ];
 
     const mockTextPromise = Promise.resolve(response1);
     const mockFetchPromise = Promise.resolve({
