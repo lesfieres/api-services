@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel goodreads-service.js index.js example.js -d dist",
     "start": "npm run build && node dist/example.js",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:ci": "jest"
   },
   "author": "",
   "license": "MIT",
