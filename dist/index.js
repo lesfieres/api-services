@@ -1,11 +1,9 @@
-'use strict';
+"use strict";
 
-var _goodreadsService = require('./goodreads-service');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _goodreadsService2 = _interopRequireDefault(_goodreadsService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _goodreadsService = _interopRequireDefault(require("./goodreads-service"));
 
 module.exports = {
-	GoodreadsService: _goodreadsService2.default
+  GoodreadsService: _goodreadsService.default
 };
