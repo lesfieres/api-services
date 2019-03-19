@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel goodreads-service.js index.js test.js -d dist",
-    "start": "npm run build && node dist/test.js",
-    "test": "jest"
+    "build": "babel goodreads-service.js index.js example.js -d dist",
+    "start": "npm run build && node dist/example.js",
+    "test": "jest --watch"
   },
   "author": "",
   "license": "MIT",

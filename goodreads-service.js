@@ -32,7 +32,7 @@ export default class GoodreadsService {
 		for (let i = initPage; i < initPage + numPages; i++) {
 			let promiseUrl = `${url}&page=${i}`;
 			promiseArray.push(fetch(promiseUrl));
-		}
+    }
 
     let responses = await Promise.all(promiseArray)
       .then(responses =>
