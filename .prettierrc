@@ -1,5 +1,0 @@
-{
-  "printWidth": 80,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "all"
-}
