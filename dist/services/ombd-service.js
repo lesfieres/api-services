@@ -51,7 +51,7 @@ function () {
                 initPage = _args.length > 1 && _args[1] !== undefined ? _args[1] : 1;
                 numPages = _args.length > 2 && _args[2] !== undefined ? _args[2] : 1;
                 // prettier-ignore
-                url = "http://www.omdbapi.com?apikey=".concat(this.key, "&s=").concat(title);
+                url = "https://www.omdbapi.com?apikey=".concat(this.key, "&s=").concat(title);
                 promiseArray = [];
                 initPage = parseInt(initPage, 10);
                 numPages = parseInt(numPages, 10);
@@ -61,7 +61,8 @@ function () {
                   promiseArray.push(fetch(promiseUrl));
                 }
 
-                _context.next = 9;
+                _context.prev = 7;
+                _context.next = 10;
                 return Promise.all(promiseArray).then(function (responses) {
                   return Promise.all(responses.map(function (response) {
                     return response.json();
@@ -72,11 +73,9 @@ function () {
                   }));
                 });
 
-              case 9:
+              case 10:
                 responses = _context.sent;
                 movies = responses.reduce(function (movies, page) {
-                  console.log(page);
-
                   if (page) {
                     return [].concat((0, _toConsumableArray2.default)(movies), (0, _toConsumableArray2.default)(page));
                   } else {
@@ -85,12 +84,17 @@ function () {
                 }, []);
                 return _context.abrupt("return", movies);
 
-              case 12:
+              case 15:
+                _context.prev = 15;
+                _context.t0 = _context["catch"](7);
+                return _context.abrupt("return", []);
+
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, this, [[7, 15]]);
       }));
 
       function search(_x) {

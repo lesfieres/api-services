@@ -78,7 +78,8 @@ function () {
                   promiseArray.push(fetch(promiseUrl));
                 }
 
-                _context.next = 9;
+                _context.prev = 7;
+                _context.next = 10;
                 return Promise.all(promiseArray).then(function (responses) {
                   return Promise.all(responses.map(function (response) {
                     return response.text();
@@ -93,7 +94,7 @@ function () {
                   }));
                 });
 
-              case 9:
+              case 10:
                 responses = _context.sent;
                 books = responses.map(function (object) {
                   return object.GoodreadsResponse.search[0].results[0].work;
@@ -105,12 +106,17 @@ function () {
                 });
                 return _context.abrupt("return", books);
 
-              case 12:
+              case 15:
+                _context.prev = 15;
+                _context.t0 = _context["catch"](7);
+                return _context.abrupt("return", []);
+
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, this, [[7, 15]]);
       }));
 
       function search(_x) {

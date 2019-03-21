@@ -39,7 +39,7 @@ export default class OmbdService {
           } else {
             return movies;
           }
-        }, [])
+        }, []);
 
       return movies;
     } catch (e) {
