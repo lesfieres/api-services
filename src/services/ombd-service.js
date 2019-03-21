@@ -8,7 +8,7 @@ export default class OmbdService {
 
   async search(title, initPage = 1, numPages = 1) {
     // prettier-ignore
-    const url = `https://www.omdbapi.com?apikey=${this.key}&s=${title}`
+    const url = `https://www.omdbapi.com?apikey=${this.key}&s=${title}`;
     let promiseArray = [];
 
     initPage = parseInt(initPage, 10);
