@@ -17,7 +17,12 @@ goodreadsService.search('game', 1, 3).then(function(books) {
 });
 */
 
+/*
 ombdService.search('ender', 1, 3).then(function(movies) {
   console.log('movies', movies);
 });
+*/
 
+ombdService.getMovieInfo('tt0944947', 'full').then(function(movie) {
+  console.log('movie', movie);
+});
