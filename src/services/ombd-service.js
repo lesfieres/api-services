@@ -11,12 +11,12 @@ export default class OmbdService {
     const url = `https://www.omdbapi.com?apikey=${this.key}&s=${title}`
     let promiseArray = [];
 
-		initPage = parseInt(initPage, 10);
-		numPages = parseInt(numPages, 10);
+    initPage = parseInt(initPage, 10);
+    numPages = parseInt(numPages, 10);
 
-		for (let i = initPage; i < initPage + numPages; i++) {
-			let promiseUrl = `${url}&page=${i}`;
-			promiseArray.push(fetch(promiseUrl));
+    for (let i = initPage; i < initPage + numPages; i++) {
+      let promiseUrl = `${url}&page=${i}`;
+      promiseArray.push(fetch(promiseUrl));
     }
 
     try {
@@ -25,21 +25,16 @@ export default class OmbdService {
           Promise.all(responses.map(response => response.json())),
         )
         .then(responses =>
-          Promise.all(
-            responses.map(
-              response => response.Search
-            ),
-          ),
+          Promise.all(responses.map(response => response.Search)),
         );
 
-      let movies = responses
-        .reduce((movies, page) => {
-          if (page) {
-            return [...movies, ...page];
-          } else {
-            return movies;
-          }
-        }, []);
+      let movies = responses.reduce((movies, page) => {
+        if (page) {
+          return [...movies, ...page];
+        } else {
+          return movies;
+        }
+      }, []);
 
       return movies;
     } catch (e) {
