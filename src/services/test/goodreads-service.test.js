@@ -11,6 +11,14 @@ describe('search', () => {
     fetchSpy.mockClear();
   });
 
+  test('Call to api with book id to get the series the book is in', () => {
+    goodreadsService.getAllSeriesABookisIn(1);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://www.goodreads.com/work/1/series?format=xml&key=key',
+    );
+  });
+
   test('Call to api with only title should just search page 1', () => {
     goodreadsService.search('test');
 
@@ -50,6 +58,7 @@ describe('search', () => {
         <search>
           <results>
             <work>
+              <id type="integer">1</id>
               <best_book type="Book">
                 <id type="integer">1</id>
                 <title>Book 1</title>
@@ -71,6 +80,7 @@ describe('search', () => {
         <search>
           <results>
             <work>
+              <id type="integer">2</id>
               <best_book type="Book">
                 <id type="integer">2</id>
                 <title>Book 2</title>
@@ -90,17 +100,23 @@ describe('search', () => {
     const jsonResponse = [
       {
         id: '1',
-        title: 'Book 1',
-        author: { id: '10', name: 'Author 1' },
-        image_url: 'image 1',
-        small_image_url: 'small image 1',
+        best_book: {
+          id: '1',
+          title: 'Book 1',
+          author: { id: '10', name: 'Author 1' },
+          image_url: 'image 1',
+          small_image_url: 'small image 1',
+        },
       },
       {
         id: '2',
-        title: 'Book 2',
-        author: { id: '20', name: 'Author 2' },
-        image_url: 'image 2',
-        small_image_url: 'small image 2',
+        best_book: {
+          id: '2',
+          title: 'Book 2',
+          author: { id: '20', name: 'Author 2' },
+          image_url: 'image 2',
+          small_image_url: 'small image 2',
+        },
       },
     ];
 

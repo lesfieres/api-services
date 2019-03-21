@@ -5,20 +5,41 @@ import { parseString } from 'xml2js';
 const parseBook = book => {
   const bestBook = book.best_book[0];
   return {
-    id: bestBook.id[0]['_'],
-    title: bestBook.title[0],
-    author: {
-      id: bestBook.author[0].id[0]['_'],
-      name: bestBook.author[0].name[0],
+    id: book.id[0]['_'],
+    best_book: {
+      id: bestBook.id[0]['_'],
+      title: bestBook.title[0],
+      author: {
+        id: bestBook.author[0].id[0]['_'],
+        name: bestBook.author[0].name[0],
+      },
+      image_url: bestBook.image_url[0],
+      small_image_url: bestBook.small_image_url[0],
     },
-    image_url: bestBook.image_url[0],
-    small_image_url: bestBook.small_image_url[0],
   };
 };
 export default class GoodreadsService {
   constructor(key, secret) {
     this.key = key;
     this.secret = secret;
+  }
+
+  async getAllSeriesABookisIn(id) {
+    // prettier-ignore
+    const url = `https://www.goodreads.com/work/${id}/series?format=xml&key=${this.key}`;
+    try {
+      const xmlSeriesResponse = await fetch(url);
+      const textXmlSeriesResponse = await xmlSeriesResponse.text();
+
+      const jsonResponse = await new Promise(resolve => {
+        parseString(textXmlSeriesResponse, (err, result) => {
+          resolve(result);
+        });
+      });
+      return jsonResponse.GoodreadsResponse.series_works[0].series_work;
+    } catch {
+      return [];
+    }
   }
 
   async search(title, initPage = 1, numPages = 1) {
