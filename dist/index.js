@@ -4,6 +4,9 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _goodreadsService = _interopRequireDefault(require("./goodreads-service"));
 
+var _ombdService = _interopRequireDefault(require("./ombd-service"));
+
 module.exports = {
-  GoodreadsService: _goodreadsService.default
+  GoodreadsService: _goodreadsService.default,
+  OmbdService: _ombdService.default
 };

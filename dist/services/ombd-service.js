@@ -102,6 +102,41 @@ function () {
       }
 
       return search;
+    }() // Plot => {'short' or 'full'}
+
+  }, {
+    key: "getMovieInfo",
+    value: function () {
+      var _getMovieInfo = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(id) {
+        var plot,
+            url,
+            _args2 = arguments;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                plot = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : 'short';
+                // prettier-ignore
+                url = "https://www.omdbapi.com?apikey=".concat(this.key, "&i=").concat(id, "&plot=").concat(plot);
+                return _context2.abrupt("return", fetch(url).then(function (response) {
+                  return response.json();
+                }));
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getMovieInfo(_x2) {
+        return _getMovieInfo.apply(this, arguments);
+      }
+
+      return getMovieInfo;
     }()
   }]);
   return OmbdService;
