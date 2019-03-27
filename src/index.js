@@ -1,5 +1,5 @@
-import GoodreadsService from './goodreads-service';
-import OmbdService from './ombd-service';
+import GoodreadsService from './services/goodreads-service';
+import OmbdService from './services/ombd-service';
 
 module.exports = {
 	GoodreadsService,
