@@ -72,4 +72,40 @@ describe('search', () => {
       done();
     });
   });
+
+  describe('getMovieInfo', () => {
+    const response = {
+      title: "title"
+    }
+
+    const mockJPromise = Promise.resolve({
+      json: () => response,
+    });
+    const fetchSpy = jest.spyOn(global, 'fetch').mockImplementation(() => mockJPromise);
+
+    beforeEach(() => {
+      fetchSpy.mockClear();
+    });
+
+    test('Call to api with only id should be called with short plot', () => {
+      ombdService.getMovieInfo("test");
+
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(global.fetch).toHaveBeenCalledWith('https://www.omdbapi.com?apikey=key&i=test&plot=short');
+    });
+
+    test('Call to api with id and plot should be called with specific plot', () => {
+      ombdService.getMovieInfo("test", "full");
+
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(global.fetch).toHaveBeenCalledWith('https://www.omdbapi.com?apikey=key&i=test&plot=full');
+    });
+
+    test('Should return movie data in a json file', (done) => {
+      ombdService.getMovieInfo("test").then(function(movie) {
+        expect(movie).toEqual(response);
+        done();
+      });
+    });
+  });
 });

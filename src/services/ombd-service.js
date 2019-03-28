@@ -41,4 +41,11 @@ export default class OmbdService {
       return [];
     }
   }
+
+  // Plot => {'short' or 'full'}
+  async getMovieInfo(id, plot = 'short') {
+    // prettier-ignore
+    const url = `https://www.omdbapi.com?apikey=${this.key}&i=${id}&plot=${plot}`;
+    return fetch(url).then((response) => response.json());
+  }
 }
