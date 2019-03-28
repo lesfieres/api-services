@@ -19,6 +19,6 @@ goodreadsService.search('game', 1, 3).then(function(books) {
   console.log('BOOOKS', books);
 });
 
-goodreadsService.getAllSeriesABookisIn(2422333).then(function(serie) {
+goodreadsService.getAllSeriesABookIsIn(2422333).then(function(serie) {
   console.log('The book is in all these series: ', serie);
 });

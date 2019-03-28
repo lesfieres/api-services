@@ -12,10 +12,10 @@ describe('search', () => {
   });
 
   test('Call to api with book id to get the series the book is in', () => {
-    goodreadsService.getAllSeriesABookisIn(1);
+    goodreadsService.getAllSeriesABookIsIn(1);
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledWith(
-      'https://www.goodreads.com/work/1/series?format=xml&key=key',
+      'https://www.goodreads.com/work/1/series?key=key',
     );
   });
 
@@ -50,6 +50,89 @@ describe('search', () => {
     expect(global.fetch).toHaveBeenCalledWith(
       'https://www.goodreads.com/search.xml?key=key&q=test&page=7',
     );
+  });
+
+  test('Call to api with id to get the response of the all the series a book is in', done => {
+    
+    const expectedResponse = `
+    <GoodreadsResponse>
+      <series_works>
+        <series_work>
+          <id>1</id>
+          <user_position>1</user_position>
+          <series>
+            <id>3</id>
+            <title>test title</title>
+            <description>test description</description>
+            <note>test note</note>
+            <series_works_count>10</series_works_count>
+            <primary_work_count>10</primary_work_count>
+            <numbered>true</numbered>
+          </series>
+        </series_work>
+        <series_work>
+          <id>2</id>
+          <user_position>1</user_position>
+          <series>
+            <id>4</id>
+            <title>test title2</title>
+            <description>test description2</description>
+            <note>test note2</note>
+            <series_works_count>10</series_works_count>
+            <primary_work_count>10</primary_work_count>
+            <numbered>true</numbered>
+          </series>
+        </series_work>
+      </series_works>
+    </GoodreadsResponse>
+    `;
+
+    const jsonResponse = [
+      {
+        id: ['1'],
+        user_position: ['1'],
+        series: [
+          {
+            id: ['3'],
+            title: ['test title'],
+            description: ['test description'],
+            note: ['test note'],
+            series_works_count: ['10'],
+            primary_work_count: ['10'],
+            numbered: ['true'],
+          },
+        ],
+      },
+      {
+        id: ['2'],
+        user_position: ['1'],
+        series: [
+          {
+          id: ['4'],
+          title: ['test title2'],
+          description: ['test description2'],
+          note: ['test note2'],
+          series_works_count: ['10'],
+          primary_work_count: ['10'],
+          numbered: ['true'],
+          }
+        ],
+      },
+    ];
+
+    const mockTextPromise = Promise.resolve(expectedResponse);
+    const mockFetchPromise = Promise.resolve({
+      text: () => mockTextPromise,
+    });
+
+    const fetchSpy = jest.spyOn(global, 'fetch');
+    fetchSpy.mockReturnValueOnce(mockFetchPromise);
+
+    goodreadsService.getAllSeriesABookIsIn(1).then(function (result) {
+      expect(result).toEqual(jsonResponse);
+      done();
+    });
+
   });
 
   test('Call to api with only title should just search page 1', done => {

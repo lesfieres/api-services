@@ -24,9 +24,9 @@ export default class GoodreadsService {
     this.secret = secret;
   }
 
-  async getAllSeriesABookisIn(id) {
+  async getAllSeriesABookIsIn(id) {
     // prettier-ignore
-    const url = `https://www.goodreads.com/work/${id}/series?format=xml&key=${this.key}`;
+    const url = `https://www.goodreads.com/work/${id}/series?key=${this.key}`;
     try {
       const xmlSeriesResponse = await fetch(url);
       const textXmlSeriesResponse = await xmlSeriesResponse.text();
@@ -36,6 +36,7 @@ export default class GoodreadsService {
           resolve(result);
         });
       });
+      
       return jsonResponse.GoodreadsResponse.series_works[0].series_work;
     } catch {
       return [];
