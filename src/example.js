@@ -11,17 +11,17 @@ let goodreadsService = new GoodreadsService(
 
 let ombdService = new OmbdService(config.OMBD_KEY);
 
-/*
 goodreadsService.search('game', 1, 3).then(function(books) {
   console.log('BOOOKS', books);
 });
-*/
 
-/*
+goodreadsService.getAllSeriesABookIsIn(2422333).then(function(serie) {
+  console.log('The book is in all these series: ', serie);
+});
+
 ombdService.search('ender', 1, 3).then(function(movies) {
   console.log('movies', movies);
 });
-*/
 
 ombdService.getMovieInfo('tt0944947', 'full').then(function(movie) {
   console.log('movie', movie);
